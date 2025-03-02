@@ -12,73 +12,66 @@
         }
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
             color: white;
-            overflow: hidden;
-        }
-        .content {
-            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             text-align: center;
+        }
+        .container {
+            max-width: 600px;
         }
         h1 {
             font-size: 3rem;
             text-transform: uppercase;
             letter-spacing: 2px;
+            color: #ffcc00;
         }
         p {
             font-size: 1.2rem;
             opacity: 0.8;
         }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .countdown {
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #ffcc00;
+        }
+        .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <canvas id="bg"></canvas>
-    <div class="content">
+    <div class="container">
+        <img src="https://via.placeholder.com/150" class="logo" alt="Zeptos AI Logo">
         <h1>Zeptos AI</h1>
-        <p>Coming Soon...</p>
+        <p>We are working on something amazing. Stay tuned!</p>
+        <div class="countdown" id="countdown">00:00:00</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("bg"), alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        function updateCountdown() {
+            const eventDate = new Date("2025-06-01T00:00:00").getTime();
+            const now = new Date().getTime();
+            const timeLeft = eventDate - now;
 
-        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
-        const material = new THREE.MeshStandardMaterial({ color: 0xff6347, metalness: 0.7, roughness: 0.2 });
-        const torusKnot = new THREE.Mesh(geometry, material);
-        scene.add(torusKnot);
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-        pointLight.position.set(10, 10, 10);
-        scene.add(pointLight);
+            document.getElementById("countdown").innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-        camera.position.z = 30;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            torusKnot.rotation.x += 0.01;
-            torusKnot.rotation.y += 0.01;
-            renderer.render(scene, camera);
+            if (timeLeft < 0) {
+                document.getElementById("countdown").innerHTML = "We're Live!";
+            }
         }
-        animate();
 
-        window.addEventListener("resize", () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-        });
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
