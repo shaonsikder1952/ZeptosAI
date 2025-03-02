@@ -9,69 +9,55 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            background: black;
             color: white;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             text-align: center;
+            overflow: hidden;
         }
         .container {
-            max-width: 600px;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
         }
         h1 {
             font-size: 3rem;
-            text-transform: uppercase;
             letter-spacing: 2px;
-            color: #ffcc00;
+            font-weight: 600;
         }
         p {
             font-size: 1.2rem;
-            opacity: 0.8;
+            opacity: 0.6;
+            margin-top: 10px;
         }
-        .countdown {
-            margin-top: 20px;
-            font-size: 2rem;
-            color: #ffcc00;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .logo {
-            max-width: 150px;
-            margin-bottom: 20px;
+        /* Subtle animated gradient */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.4) 10%, rgba(50,50,50,0.1) 50%, black 100%);
+            animation: bgMove 10s infinite alternate ease-in-out;
+        }
+        @keyframes bgMove {
+            from { transform: scale(1.05); }
+            to { transform: scale(1); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="https://via.placeholder.com/150" class="logo" alt="Zeptos AI Logo">
         <h1>Zeptos AI</h1>
-        <p>We are working on something amazing. Stay tuned!</p>
-        <div class="countdown" id="countdown">00:00:00</div>
+        <p>Redefining the Future of AI</p>
     </div>
-
-    <script>
-        function updateCountdown() {
-            const eventDate = new Date("2025-06-01T00:00:00").getTime();
-            const now = new Date().getTime();
-            const timeLeft = eventDate - now;
-
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerHTML = 
-                `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-            if (timeLeft < 0) {
-                document.getElementById("countdown").innerHTML = "We're Live!";
-            }
-        }
-
-        setInterval(updateCountdown, 1000);
-    </script>
 </body>
 </html>
